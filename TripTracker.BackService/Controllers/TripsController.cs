@@ -25,59 +25,37 @@ namespace TripTracker.BackService.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAsync()
 		{
-			try
-			{
-				CauseError();
-				
-				var trips = await _context.Trips
-					.AsNoTracking()
-					.ToListAsync();
-				return Ok(trips);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-				throw;
-			}
+
+			CauseError();
+			
+			var trips = await _context.Trips
+				.AsNoTracking()
+				.ToListAsync();
+			return Ok(trips);
+
 		}
 
 		// GET api/Trips/5
 		[HttpGet("{id}")]
 		public Trip Get(int id)
 		{
-			try
-			{
-				return _context.Trips.Find(id);
-
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-				throw;
-			}
+			return _context.Trips.Find(id);
 		}
 
 		// POST api/Trips
 		[HttpPost]
 		public IActionResult Post([FromBody]Trip value)
 		{
-			try
-			{
-				if (!ModelState.IsValid)
-				{
-					return BadRequest(ModelState);
-				}
 
-				_context.Trips.Add(value);
-				_context.SaveChanges();
-
-				return Ok();
-			}
-			catch (Exception e)
+			if (!ModelState.IsValid)
 			{
-				Console.WriteLine(e);
-				throw;
+				return BadRequest(ModelState);
 			}
+
+			_context.Trips.Add(value);
+			_context.SaveChanges();
+
+			return Ok();
 
 		}
 
@@ -85,56 +63,41 @@ namespace TripTracker.BackService.Controllers
 		[HttpPut("{id}")]
 		public async Task<IActionResult> PutAsync(int id, [FromBody]Trip value)
 		{
-			try
+
+			if (!_context.Trips.Any(t => t.Id == id))
 			{
-				if (!_context.Trips.Any(t => t.Id == id))
-				{
-					return NotFound();
-				}
-
-				if (!ModelState.IsValid)
-				{
-					return BadRequest(ModelState);
-				}
-
-				//what about nulls?
-				_context.Trips.Update(value);
-				await _context.SaveChangesAsync();
-
-				return Ok();
+				return NotFound();
 			}
-			catch (Exception e)
+
+			if (!ModelState.IsValid)
 			{
-				Console.WriteLine(e);
-				throw;
+				return BadRequest(ModelState);
 			}
+
+			//what about nulls?
+			_context.Trips.Update(value);
+			await _context.SaveChangesAsync();
+
+			return Ok();
 		}
 
 		// DELETE api/Trips/5
 		[HttpDelete("{id}")]
 		public IActionResult Delete(int id)
 		{
-			try
-			{
-				var myTrip = _context.Trips.Find(id);
+            var myTrip = _context.Trips.Find(id);
 
-				if (myTrip == null)
-				{
-					return NotFound();
-				}
+            if (myTrip == null)
+            {
+                return NotFound();
+            }
 
-				_context.Trips.Remove(myTrip);
-				_context.SaveChanges();
+            _context.Trips.Remove(myTrip);
+            _context.SaveChanges();
 
-				// DELETE FROM Trips WHERE id=?
+            // DELETE FROM Trips WHERE id=?
 
-				return NoContent();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
-				throw;
-			}
+            return NoContent();
 		}
 
 		private void CauseError()

@@ -48,10 +48,7 @@ namespace TripTracker.BackService
 
 			}
 			
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+			app.UseDeveloperExceptionPage();
 
 			app.UseExceptionHandler(errorApp =>
 			{
