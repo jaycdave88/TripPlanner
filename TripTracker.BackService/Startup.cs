@@ -48,29 +48,10 @@ namespace TripTracker.BackService
 
 			}
 			
+
 			app.UseDeveloperExceptionPage();
 
-			app.UseExceptionHandler(errorApp =>
-			{
-				errorApp.Run(async context =>
-				{
-					var errorFeatures = context.Features.Get<IExceptionHandlerFeature>();
-					var exception = errorFeatures.Error;
-
-					var details = exception.ToString();
-
-					var problemDetails = new ProblemDetails
-					{
-						Title = "An unexpected error occured!",
-						Status = 500,
-						Detail = details,
-						Instance = $"urn:myorganization:error:{Guid.NewGuid()}"
-					};
-					context.Response.StatusCode = problemDetails.Status.Value;
-					context.Response.WriteJson(problemDetails, "application/problem+json");
-				});
-			});
-			
+			app.UseExceptionHandler();
 			
 			
 			app.UseMvc();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -107,7 +108,7 @@ namespace TripTracker.BackService.Controllers
 			
 			if (rand.Next(2) == 1)
 			{
-				throw new Exception("PlannedTrips.db out of space.");
+				throw new DBConcurrencyException("this is a test");
 			}
 		}
 	}
