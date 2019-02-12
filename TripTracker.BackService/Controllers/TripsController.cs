@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite.Internal.UrlMatches;
 using Microsoft.EntityFrameworkCore;
 using TripTracker.BackService.Data;
 using TripTracker.BackService.Models;
@@ -26,13 +27,38 @@ namespace TripTracker.BackService.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAsync()
 		{
-
-			CauseError();
+			try
+			{
+				Random rand = new Random();
 			
-			var trips = await _context.Trips
-				.AsNoTracking()
-				.ToListAsync();
-			return Ok(trips);
+				if (rand.Next(2) == 1)
+				{
+					try
+					{
+						var str = "This is a test";
+						Convert.ToInt32(str);
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine(e);
+						throw;
+					}
+				}
+				else
+				{
+					var trips = await _context.Trips
+						.AsNoTracking()
+						.ToListAsync();
+					return Ok(trips);
+				}
+
+				return null;
+
+			}
+			catch (Exception e)
+			{
+				throw e;
+			}
 
 		}
 
@@ -101,15 +127,9 @@ namespace TripTracker.BackService.Controllers
             return NoContent();
 		}
 
-		private void CauseError()
+		private void CauseError(Exception ex)
 		{
-			
-			Random rand = new Random();
-			
-			if (rand.Next(2) == 1)
-			{
-				throw new DBConcurrencyException("this is a test");
-			}
+			throw ex;
 		}
 	}
 }
