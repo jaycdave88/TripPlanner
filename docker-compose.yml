@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  ddagent:
+    image: datadog/docker-dd-agent
+    environment:
+      - DD_APM_ENABLED=true
+      - DD_BIND_HOST=0.0.0.0
+      - DD_API_KEY=2c2246bd5998bcf3c047c36138b5d2e0
+    ports:
+      - "8126:8126"
+
+  backservice:
+    image: triptrackerbackservice
+    build:
+      context: .
+      dockerfile: TripTracker.BackService/Dockerfile
+    environment:
+      - DD_TRACE_AGENT_HOSTNAME=triptracker-master_ddagent_1
+      - DD_TRACE_AGENT_PORT=8126
+    depends_on:
+      - ddagent
+
+  ui:
+    image: triptrackerui
+    environment:
+      - serviceUrl=http://backservice
+      - DD_TRACE_AGENT_HOSTNAME=triptracker-master_ddagent_1
+      - DD_TRACE_AGENT_PORT=8126
+    build:
+      context: .
+      dockerfile: TripTracker.UI/Dockerfile
+    links:
+      - backservice
+    depends_on:
+      - ddagent
+
+  db:
+    image: "microsoft/mssql-server-linux"
