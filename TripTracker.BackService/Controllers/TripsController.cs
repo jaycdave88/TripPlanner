@@ -18,7 +18,6 @@ namespace TripTracker.BackService.Controllers
 		public TripsController(TripContext context)
 		{
 			_context = context;
-			//  _context.ChangeTracker.QueryTrackingBehavior=QueryTrackingBehavior.NoTracking;
 		}
 
 
@@ -145,7 +144,7 @@ namespace TripTracker.BackService.Controllers
 			
 			if (rand.Next(2) == 1)
 			{
-				throw new OutOfMemoryException("PlannedTrips.db out of space.");
+				throw new Exception("PlannedTrips.db out of space.");
 			}
 		}
 	}
