@@ -27,46 +27,27 @@ namespace TripTracker.BackService.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetAsync()
 		{
-			try
-			{
-				Random rand = new Random();
-			
-				if (rand.Next(2) == 1)
-				{
-					try
-					{
-						var str = "This is a test";
-						Convert.ToInt32(str);
-					}
-					catch (Exception e)
-					{
-						Console.WriteLine(e);
-						throw e;
-					}
-				}
-				else
-				{
-					var trips = await _context.Trips
-						.AsNoTracking()
-						.ToListAsync();
-					return Ok(trips);
-				}
+            var trips = await _context.Trips
+                .AsNoTracking()
+                .ToListAsync();
+            return Ok(trips);
+        }
 
-				return null;
-
-			}
-			catch (Exception e)
-			{
-				throw e;
-			}
-
-		}
-
-		// GET api/Trips/5
-		[HttpGet("{id}")]
+        // GET api/Trips/5
+        [HttpGet("{id}")]
 		public Trip Get(int id)
 		{
-			return _context.Trips.Find(id);
+            //Random rand = new Random();
+
+            //if (rand.Next(2) == 1)
+            //{
+            //    throw new DataException("An error has occured please try again");
+            //}
+            //else
+            //{
+                return _context.Trips.Find(id);
+
+            //}
 		}
 
 		// POST api/Trips

@@ -7,6 +7,7 @@ services:
       - DD_APM_ENABLED=true
       - DD_BIND_HOST=0.0.0.0
       - DD_API_KEY=[Datadog API Key]
+      - DD_APM_ENV=dotNet_distributed_tracing_sandbox
     ports:
       - "8126:8126"
 
