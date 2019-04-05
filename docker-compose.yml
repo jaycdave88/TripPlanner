@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 services:
   ddagent:
@@ -6,7 +6,7 @@ services:
     environment:
       - DD_APM_ENABLED=true
       - DD_BIND_HOST=0.0.0.0
-      - DD_API_KEY=API Key
+      - DD_API_KEY=749dc28f5c61b8c655aa911d954407d7
     ports:
       - "8126:8126"
 
@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: TripTracker.BackService/Dockerfile
     environment:
-      - DD_TRACE_AGENT_HOSTNAME=triptracker-master_ddagent_1
+      - DD_TRACE_AGENT_HOSTNAME=ddagent
       - DD_TRACE_AGENT_PORT=8126
     depends_on:
       - ddagent

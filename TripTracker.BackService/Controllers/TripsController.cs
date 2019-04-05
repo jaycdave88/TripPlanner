@@ -41,7 +41,7 @@ namespace TripTracker.BackService.Controllers
 					catch (Exception e)
 					{
 						Console.WriteLine(e);
-						throw;
+						throw e;
 					}
 				}
 				else
